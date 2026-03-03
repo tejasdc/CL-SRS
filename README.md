@@ -1,7 +1,7 @@
-<h1 align="center">Concept-Level Spaced Repetition (CL-SRS)</h1>
+<h1 align="center">Voice-First Dynamic Concept-Level Spaced Repetition</h1>
 
 <p align="center">
-  <strong>A new spaced repetition algorithm that schedules at the concept level, not the card level.</strong>
+  <strong>A new spaced repetition algorithm — voice-first, concept-level, dynamically adaptive.</strong>
 </p>
 
 <p align="center">
@@ -20,7 +20,7 @@ Every spaced repetition system ever built — Anki, SuperMemo, FSRS, Leitner —
 
 This is a fundamental limitation. Cards are atoms. But knowledge isn't atomic — it's structured. You don't "know" photosynthesis because you can recall its definition. You know it when you can distinguish C3 from C4 pathways, apply it to explain why shade plants adapt differently, and identify where the process becomes rate-limited. That's understanding. Cards can't measure it.
 
-**CL-SRS is a new scheduling algorithm that operates at the concept level.** It tracks six dimensions of understanding per concept, gates interval stretching on demonstrated mastery across those dimensions, and uses AI to evaluate comprehension — not just recall. No existing SRS does this.
+**CL-SRS is a new scheduling algorithm that operates at the concept level.** It tracks six dimensions of understanding per concept, gates interval stretching on demonstrated mastery across those dimensions, and uses AI to evaluate comprehension — not just recall. It's also voice-first: you speak your answers out loud, and the AI listens. No existing SRS does any of this.
 
 ### What's New
 
@@ -30,7 +30,9 @@ This is a fundamental limitation. Cards are atoms. But knowledge isn't atomic �
 
 3. **Coverage gating** — This is the key mechanism. A concept's review interval only stretches when discrimination AND application coverage exceed their thresholds. Knowing the definition isn't enough. The algorithm forces depth before it grants spacing.
 
-4. **AI-graded understanding** — Instead of self-grading ("Did I get it? Eh, I'll hit Good"), the system listens to your spoken answer and evaluates what you actually understand — what's present, what's missing, where the confusion is. Grading is evidence-based, not self-reported.
+4. **Voice-first interaction** — You don't tap buttons or flip cards. You speak. Speaking forces you to organize your thoughts and articulate your understanding in a way that recognition-based interaction (reading an answer and thinking "yeah, I knew that") never does. It's the difference between thinking you understand something and proving it out loud.
+
+5. **AI that probes, not just grades** — Because you're speaking, there's actually someone on the other end listening. The AI doesn't just score your answer — it identifies *where* your understanding breaks down. You described the process right but confused it with a related concept? It catches that, tells you the specific distinction, and adjusts what it asks you next. This is the interaction that cards were never capable of: a tutor that hears how you think and responds to it.
 
 ## Why Card-Level SRS Is Broken
 
@@ -43,9 +45,16 @@ This leads to real problems:
 - **Surface learning** — Learners optimize for recall without building transferable understanding
 - **Gaming the interval** — Self-grading lets you hit "Easy" on cards you barely comprehend, inflating intervals without real mastery
 - **No gap detection** — The algorithm can't tell the difference between "knows the definition" and "understands the concept deeply"
+- **Dead-end interactions** — You flip a card, you answer, it's over. There's no follow-up. No one asks "wait, can you explain *why*?" The interaction has nowhere to go.
 - **Isolation** — Cards exist in a vacuum. No prerequisite relationships, no contrast pairs, no coverage requirements
 
-CL-SRS addresses all of these by moving the scheduling unit from the card to the concept, and by requiring demonstrated coverage across multiple knowledge dimensions before stretching intervals.
+But the deepest problem is the interaction model itself. A card flip is a closed loop — question, answer, self-grade, done. There's no room for the thing that actually drives understanding: **being probed**.
+
+A great tutor doesn't just ask "What is X?" and mark you right or wrong. They listen to *how* you answer. They notice you got the definition right but confused it with a related concept. They follow up: "Interesting — so how is that different from Y?" They nudge you toward the gap you didn't know you had. That back-and-forth — that probing — is where real understanding happens. Flashcards can't do it. They were never designed to.
+
+When AI listens to your spoken answer, the interaction fundamentally changes. The system can detect that you described a process correctly but misidentified the catalyst. It can see that you understand the definition but can't apply it to a new context. And it can respond — not with "Wrong, try again" but with "You're close. You described the steps right, but the key distinction from Y is Z." It maps exactly where your understanding breaks down and reshapes what it asks you next.
+
+This is what CL-SRS is built around. The algorithm doesn't just schedule better — it creates an interaction loop where AI probes your understanding across multiple dimensions, identifies specific gaps, and dynamically adjusts to close them.
 
 ## The Algorithm
 
@@ -112,9 +121,17 @@ z = (log(ms) - log_mean) / log_std
 
 With priors `(ln(2500), 0.6)` until 5+ successful attempts establish a baseline. Slow responses get penalized — fluency matters, not just correctness.
 
-## Voice-First Grading
+## Why Voice-First
 
-Instead of self-grading, CL-SRS uses a multi-stage grading pipeline:
+Traditional SRS is a silent, solitary activity. You read a prompt, think of an answer, flip the card, and judge yourself. The entire interaction happens inside your head.
+
+That's a problem. Recognition and recall are not the same thing. It's easy to read an answer and think "yeah, I knew that" when you couldn't have produced it from scratch. Self-grading is unreliable because you're both the student and the examiner — and you're biased toward leniency.
+
+Voice changes the dynamic completely. When you speak your answer out loud, you have to *construct* it — pull the knowledge together, organize it, put it into words. You can't fake that. And because there's an AI on the other end actually listening, you get something cards could never provide: a response. The AI hears what you said, understands what you meant, catches what you got wrong, and tells you specifically what to fix. You're not flipping cards alone anymore. You're having a conversation with something that's paying attention.
+
+### The Grading Pipeline
+
+Under the hood, CL-SRS processes your spoken answer through a multi-stage pipeline:
 
 ```
 Speech ──▶ ASR (Whisper) ──▶ Normalize ──▶ Deterministic ──▶ LLM Semantic
@@ -137,8 +154,8 @@ The normalizer handles voice artifacts: filler words ("um", "like"), number word
 | Scheduling unit | **Concept** | Card | Card | Card |
 | Knowledge dimensions | **6 (tracked)** | 1 (pass/fail) | 1 (grade 0-5) | 1 (grade) |
 | Coverage gating | **Yes** | No | No | No |
-| Grading | **AI + deterministic** | Self-graded | Self-graded | Self-graded |
-| Voice input | **Native** | No | No | No |
+| Grading | **AI probes understanding** | Self-graded | Self-graded | Self-graded |
+| Interaction | **Voice — speak, get probed** | Silent card flip | Silent card flip | Silent card flip |
 | Content generation | **AI from any URL** | Manual | Manual | Manual |
 | Gap detection | **Per-dimension** | None | None | None |
 | Open source | Yes | Yes | No | Yes |
