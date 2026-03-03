@@ -16,11 +16,11 @@
 
 ## The Invention
 
-Every spaced repetition system ever built — Anki, SuperMemo, FSRS, Leitner — operates at the same level: the **card**. One fact, one interval, one self-reported grade. The algorithm sees a stream of pass/fail signals and adjusts timing. That's it.
+Existing spaced repetition systems — Anki, SuperMemo, FSRS, Leitner — operate at the **card** level. One fact, one interval, one self-reported grade. The algorithm sees a stream of pass/fail signals and adjusts timing.
 
-This is a fundamental limitation. Cards are atoms. But knowledge isn't atomic — it's structured. You don't "know" photosynthesis because you can recall its definition. You know it when you can distinguish C3 from C4 pathways, apply it to explain why shade plants adapt differently, and identify where the process becomes rate-limited. That's understanding. Cards can't measure it.
+But knowledge isn't atomic — it's structured. You don't "know" photosynthesis because you can recall its definition. You know it when you can distinguish C3 from C4 pathways, apply it to explain why shade plants adapt differently, and identify where the process becomes rate-limited. That's understanding. That's what CL-SRS is designed to track.
 
-**CL-SRS is a new scheduling algorithm that operates at the concept level.** It tracks six dimensions of understanding per concept, gates interval stretching on demonstrated mastery across those dimensions, and uses AI to evaluate comprehension — not just recall. It's also voice-first: you speak your answers out loud, and the AI listens. No existing SRS does any of this.
+**CL-SRS is a new scheduling algorithm that operates at the concept level.** It tracks six dimensions of understanding per concept, gates interval stretching on demonstrated mastery across those dimensions, and uses AI to evaluate comprehension — not just recall. It's also voice-first: you speak your answers out loud, and the AI listens.
 
 ### What's New
 
@@ -32,7 +32,7 @@ This is a fundamental limitation. Cards are atoms. But knowledge isn't atomic �
 
 4. **Voice-first interaction** — You don't tap buttons or flip cards. You speak. Speaking forces you to organize your thoughts and articulate your understanding in a way that recognition-based interaction (reading an answer and thinking "yeah, I knew that") never does. It's the difference between thinking you understand something and proving it out loud.
 
-5. **AI that probes, not just grades** — Because you're speaking, there's actually someone on the other end listening. The AI doesn't just score your answer — it identifies *where* your understanding breaks down. You described the process right but confused it with a related concept? It catches that, tells you the specific distinction, and adjusts what it asks you next. This is the interaction that cards were never capable of: a tutor that hears how you think and responds to it.
+5. **AI that probes, not just grades** — Because you're speaking, there's actually someone on the other end listening. The AI doesn't just score your answer — it identifies *where* your understanding breaks down. You described the process right but confused it with a related concept? It catches that, tells you the specific distinction, and adjusts what it asks you next. A tutor that hears how you think and responds to it.
 
 ## Why Card-Level SRS Is Broken
 
@@ -50,7 +50,7 @@ This leads to real problems:
 
 But the deepest problem is the interaction model itself. A card flip is a closed loop — question, answer, self-grade, done. There's no room for the thing that actually drives understanding: **being probed**.
 
-A great tutor doesn't just ask "What is X?" and mark you right or wrong. They listen to *how* you answer. They notice you got the definition right but confused it with a related concept. They follow up: "Interesting — so how is that different from Y?" They nudge you toward the gap you didn't know you had. That back-and-forth — that probing — is where real understanding happens. Flashcards can't do it. They were never designed to.
+A great tutor doesn't just ask "What is X?" and mark you right or wrong. They listen to *how* you answer. They notice you got the definition right but confused it with a related concept. They follow up: "Interesting — so how is that different from Y?" They nudge you toward the gap you didn't know you had. That back-and-forth — that probing — is where real understanding happens.
 
 When AI listens to your spoken answer, the interaction fundamentally changes. The system can detect that you described a process correctly but misidentified the catalyst. It can see that you understand the definition but can't apply it to a new context. And it can respond — not with "Wrong, try again" but with "You're close. You described the steps right, but the key distinction from Y is Z." It maps exactly where your understanding breaks down and reshapes what it asks you next.
 
@@ -127,7 +127,7 @@ Traditional SRS is a silent, solitary activity. You read a prompt, think of an a
 
 That's a problem. Recognition and recall are not the same thing. It's easy to read an answer and think "yeah, I knew that" when you couldn't have produced it from scratch. Self-grading is unreliable because you're both the student and the examiner — and you're biased toward leniency.
 
-Voice changes the dynamic completely. When you speak your answer out loud, you have to *construct* it — pull the knowledge together, organize it, put it into words. You can't fake that. And because there's an AI on the other end actually listening, you get something cards could never provide: a response. The AI hears what you said, understands what you meant, catches what you got wrong, and tells you specifically what to fix. You're not flipping cards alone anymore. You're having a conversation with something that's paying attention.
+Voice changes the dynamic. When you speak your answer out loud, you have to *construct* it — pull the knowledge together, organize it, put it into words. And because there's an AI on the other end actually listening, you get a real response. The AI hears what you said, understands what you meant, catches what you got wrong, and tells you specifically what to fix. It's a conversation with something that's paying attention.
 
 ### The Grading Pipeline
 
